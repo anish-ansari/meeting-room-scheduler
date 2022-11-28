@@ -1,0 +1,39 @@
+<%# partial file to display nav bar %>
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <%= link_to "Meeting Room Scheduler",root_path, class: "navbar-brand" %>
+    </div>
+    <ul class="nav navbar-nav">
+      <li><%= link_to "Home", root_path %></li>
+      <li><%= link_to 'Rooms', rooms_path, class: "mx-2" %></li>
+      <li><%= link_to 'My Bookings', bookings_path, class: "mx-2" %></li>
+      <% if signed_in? %>
+      <li><%= link_to 'My Bookings', bookings_path, class: "mx-2" %></li>
+      <li><%= link_to 'Rooms', rooms_path, class: "mx-2" %></li>
+      <% end %>
+    </ul>
+    <% if signed_in? %>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <%= link_to destroy_user_session_path, data: { turbo_method: :delete } do %>
+            <span class="glyphicon glyphicon-log-in"></span> Log out
+          <% end %>
+        </li>
+      </ul>
+    <% else %>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+          <%= link_to new_user_session_path do %>
+            <span class="glyphicon glyphicon-user"></span> Login
+          <% end %>
+        </li>
+        <li>
+          <%= link_to new_user_registration_path do %>
+            <span class="glyphicon glyphicon-log-in"></span> Sign Up
+          <% end %>
+        </li>
+      </ul>
+    <% end %>
+  </div>
+</nav>
