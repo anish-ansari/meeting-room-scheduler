@@ -1,2 +1,23 @@
-<h1>Rooms#show</h1>
-<p>Find me in app/views/rooms/show.html.erb</p>
+<h2>Room Information</h2>
+<div class="main">
+  <div class="image">
+    <img src="<%=url_for(@room.room_image) if @room.room_image.attached? %>" class="rounded mx-auto d-block" alt="image" style="width: 250px; height: 250px;" />
+  </div>
+  <div class="info">
+    <p>Name: <%= @room.name %></p>
+    <p>Floor: <%= @room.floor_number %></p>
+    <p>Capacity: <%= @room.capacity %></p>
+  </div>
+  <div class="buttons">
+    <div class="edit">
+      <%= link_to "Edit room", edit_room_path(@room), class: "btn btn-warning btn-lg"%>
+    </div>
+    <div class="delete">
+      <%= link_to "Delete room", room_path(@room), class: "btn btn-danger btn-lg",
+          data: {
+            turbo_method: :delete,
+            turbo_confirm: 'Are you sure you want to delete this room?'
+          }%>
+    </div>
+  </div>
+</div>
