@@ -1,0 +1,22 @@
+<%= form_with model: @room, local: true, data: { turbo: false } do |form| %>
+  <p>
+    <%= form.label :floor_number %><br>
+    <%= form.select(:floor_number, options_for_select([1, 2, 3, 4, 5]), include_blank: "Select here:") %>
+  </p>
+  <p>
+    <%= form.label :room_name %><br>
+    <%= form.text_field :name %>
+  </p>
+  <p>
+    <%= form.label :capacity %><br>
+    <%= form.text_field :capacity %>
+  </p>
+  <p>
+    <%= form.label :room_image %>
+    <%= form.file_field :room_image %>
+  </p>
+  <p>
+    <%= form.submit "Submit" %>
+  </p>
+<% end %>
+<%= link_to 'Go back', rooms_path %>
