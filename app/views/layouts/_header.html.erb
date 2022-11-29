@@ -7,10 +7,8 @@
     <ul class="nav navbar-nav">
       <li><%= link_to "Home", root_path %></li>
       <li><%= link_to 'Rooms', rooms_path, class: "mx-2" %></li>
-      <li><%= link_to 'My Bookings', bookings_path, class: "mx-2" %></li>
       <% if signed_in? %>
       <li><%= link_to 'My Bookings', bookings_path, class: "mx-2" %></li>
-      <li><%= link_to 'Rooms', rooms_path, class: "mx-2" %></li>
       <% end %>
     </ul>
     <% if signed_in? %>
