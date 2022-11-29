@@ -7,6 +7,9 @@
     <p>Name: <%= @room.name %></p>
     <p>Floor: <%= @room.floor_number %></p>
     <p>Capacity: <%= @room.capacity %></p>
+    <div class="book">
+      <%= link_to "Book this room", new_booking_path, class: "btn btn-info btn-lg" %>
+    </div>
   </div>
   <div class="buttons">
     <div class="edit">
