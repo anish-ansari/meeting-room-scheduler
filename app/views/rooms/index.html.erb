@@ -1,0 +1,37 @@
+<h1>All Rooms:</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">S.N.</th>
+      <th scope="col">Floor</th>
+      <th scope="col">Room Name</th>
+      <th scope="col">Status</th>
+      <th scope="col">Current schedule</th>
+      <th scope="col">View details</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= @rooms.each_with_index do |room, num| %>
+      <tr>
+        <th scope="row"><%= num+1 %></th>
+        <td><%= room.floor_number %></td>
+        <td><%= room.name %></td>
+        <% if room.room_id == nil %>
+          <td>Available</td>
+          <td>No schedule</td>
+        <% elsif room.end_date_time - room.start_date_time == 0 %>
+          <td>Available</td>
+          <td>No schedule</td>
+        <% else %>
+          <td>Booked</td>
+          <td><%= room.description %></td>
+        <% end %>
+        <% if room.room_id == nil %>
+          <td><%= link_to "Details", room_path(room.id) %>
+          <% else %>
+            <td><%= link_to "Details", room_path(room.room_id) %></td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
