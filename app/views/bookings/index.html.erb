@@ -1,2 +1,27 @@
-<h1>Bookings#index</h1>
-<p>Find me in app/views/bookings/index.html.erb</p>
+<h1>Rooms you have booked:</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">S.N.</th>
+      <%# <th scope="col">Room Name</th> %>
+      <th scope="col">Room name</th>
+      <th scope="col">Floor number</th>
+      <th scope="col">Meeting description</th>
+      <th scope="col">Meeting start</th>
+      <th scope="col">Meeting end</th>
+    </tr>
+  </thead>
+  <tbody>
+    <%= @bookings.each_with_index do |booking, num| %>
+      <tr>
+        <th scope="row"><%= num+1 %></th>
+        <td><%= booking.room.name %></td>
+        <td><%= booking.room.floor_number %></td>
+        <td><%= booking.description %></td>
+        <td><%= booking.start_date_time.in_time_zone.localtime %></td>
+        <td><%= booking.end_date_time.in_time_zone.localtime %></td>
+        <%# <td>Booked</td> %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

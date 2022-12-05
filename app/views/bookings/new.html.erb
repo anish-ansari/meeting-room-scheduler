@@ -1,2 +1,23 @@
-<h1>Bookings#new</h1>
-<p>Find me in app/views/bookings/new.html.erb</p>
+<h2>Enter the following information to start your booking:</h2>
+<%= form_with model: @booking, local: true, data: { turbo: false } do |form| %>
+  <p>
+    <%= hidden_field_tag :room, '1' %>
+  </p>
+  <p>
+    <%= form.label :meeting_description %><br>
+    <%= form.text_area :description, rows: 4, cols: 30 %>
+  </p>
+  <p>
+    <%= form.label :start_date_and_time %><br>
+    <input type="datetime-local" name="booking[start_date_time]">
+  </p>
+  <p>
+    <%= form.label :end_date_and_time %><br>
+    <input type="datetime-local" name="booking[end_date_time]">
+  </p>
+  <%= button_tag current_user.id %>
+  <p>
+    <%= form.submit "Submit" %>
+  </p>
+<% end %>
+<%= link_to 'Go back', {:action=>"show", :controller=>"rooms", :id=> session[:room_id]} %>
