@@ -1,6 +1,5 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!
-  before_action :find_booking, only: %i[show edit update destroy]
 
   def index
     @bookings = Booking.where(user_id: current_user.id)
@@ -9,45 +8,59 @@ class BookingsController < ApplicationController
   def show; end
 
   def new
+    @room = Room.find(params[:room_id])
     @booking = Booking.new
   end
 
-  def edit; end
-
   def create
+    @room = Room.find(params[:room_id])
     @booking = Booking.new(booking_params)
-    # hour = params[:booking][:start_date_time].match(/(?<=T)\d+(?=:)/)
-    # minure = params[:booking][:start_date_time].match(/(?<=:)\d+/)
-    start_local_to_utc = params[:booking][:start_date_time].split("T")[1].in_time_zone.utc - 5.hours - 45.minutes
-    start_utc_formatting = start_local_to_utc.to_s.split(" ").join("T")[0..-8]
-    @booking.start_date_time = start_utc_formatting
 
-    end_local_to_utc = params[:booking][:end_date_time].split("T")[1].in_time_zone.utc - 5.hours - 45.minutes
-    end_utc_formatting = end_local_to_utc.to_s.split(" ").join("T")[0..-8]
-    @booking.end_date_time = end_utc_formatting
-    # byebug
+    @booking.start_date_time = local_to_utc(params[:booking][:start_date_time])
+    @booking.end_date_time = local_to_utc(params[:booking][:end_date_time])
 
-    if @booking.save
-      redirect_to @booking
-      session.delete(:room_id)
+    @all_info = Booking.where(room_id: @room.id).select("start_date_time, end_date_time")
+    arr = []
+    @all_info.each do |val|
+      temp = []
+      temp.push(val[:start_date_time], val[:end_date_time])
+      arr.push(temp)
+      # puts val[:start_date_time]
+      # byebug
+    end
+    puts arr
+    byebug
+
+    if @all_info.empty?
+      if @booking.save
+        redirect_to room_booking_path(@room, @booking)
+      else
+        render "new"
+      end
     else
-      render "new"
+      if @booking.save
+        redirect_to room_booking_path(@room, @booking)
+      else
+        render "new"
+      end
     end
   end
-
-  def update; end
-
-  def destroy; end
 
   private
 
   def booking_params
+    @room = Room.find(params[:room_id])
     params.require(:booking)
           .permit(:description, :start_date_time, :end_date_time)
-          .merge(user_id: current_user.id, room_id: session[:room_id])
+          .merge(user_id: current_user.id, room_id: @room.id)
   end
 
   def find_booking
     @booking = Booking.find(params[:id])
+  end
+
+  def local_to_utc(time)
+    to_utc = time.split("T")[1].in_time_zone.utc - 5.hours - 45.minutes
+    to_utc.to_s.split(" ").join("T")[0..-8]
   end
 end
