@@ -1,26 +1,32 @@
 <h2>Room Information</h2>
 <div class="main">
   <div class="image">
-    <img src="<%=url_for(@room.room_image) if @room.room_image.attached? %>" class="rounded mx-auto d-block" alt="image" style="width: 250px; height: 250px;" />
+    <img src="<%= url_for(@room.room_image) if @room.room_image.attached? %>"
+    class="rounded mx-auto d-block" alt="image"
+    style="width: 250px; height: 250px;" />
   </div>
   <div class="info">
     <p>Name: <%= @room.name %></p>
     <p>Floor: <%= @room.floor_number %></p>
     <p>Capacity: <%= @room.capacity %></p>
     <div class="book">
-      <%= link_to "Book this room", new_booking_path, class: "btn btn-info btn-lg" %>
+      <%= link_to "Book this room", new_room_booking_path(@room), class: "btn btn-info btn-lg" %>
     </div>
   </div>
-  <div class="buttons">
-    <div class="edit">
-      <%= link_to "Edit room", edit_room_path(@room), class: "btn btn-warning btn-lg"%>
-    </div>
-    <div class="delete">
-      <%= link_to "Delete room", room_path(@room), class: "btn btn-danger btn-lg",
+  <% if current_user == nil %>
+  <% elsif current_user.is_admin? %>
+    <div class="buttons">
+      <div class="edit">
+        <%= link_to "Edit room", edit_room_path(@room), class: "btn btn-warning btn-lg"%>
+      </div>
+      <div class="delete">
+        <%= link_to "Delete room", room_path(@room), class: "btn btn-danger btn-lg",
           data: {
             turbo_method: :delete,
             turbo_confirm: 'Are you sure you want to delete this room?'
           }%>
+      </div>
     </div>
-  </div>
+  <% end %>
 </div>
+<%= link_to 'Go back', rooms_path %>
