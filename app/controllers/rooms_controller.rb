@@ -2,16 +2,8 @@ class RoomsController < ApplicationController
   before_action :find_room, only: %i[show edit update destroy]
 
   def index
-    @book = Booking.where(room_id: nil)
-    # byebug
-
-    @rooms = if @book.empty?
-              #  Room.joins('FULL OUTER JOIN bookings ON rooms.id = bookings.room_id').select('*')
-             Room.left_joins(:bookings).select("*")
-             #  Room.all
-             else
-               Room.joins(:bookings).select('*')
-             end
+    @rooms = Room.all
+    @information = Room.joins(:bookings, :users).select('*')
   end
 
   def show; end
@@ -54,6 +46,5 @@ class RoomsController < ApplicationController
 
   def find_room
     @room = Room.find(params[:id])
-    session[:room_id] = @room.id
   end
 end
