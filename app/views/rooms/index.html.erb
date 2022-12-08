@@ -1,4 +1,8 @@
 <h1>All Rooms:</h1>
+<% if current_user == nil %>
+<% elsif current_user.is_admin? %>
+  <%= link_to "Add new room", new_room_path, class: "btn btn-primary btn-lg" %>
+<% end %>
 <table class="table">
   <thead>
     <tr>
@@ -7,6 +11,7 @@
       <th scope="col">Room Name</th>
       <th scope="col">Status</th>
       <th scope="col">Current schedule</th>
+      <th scope="col">Booked by</th>
       <th scope="col">View details</th>
     </tr>
   </thead>
@@ -16,22 +21,17 @@
         <th scope="row"><%= num+1 %></th>
         <td><%= room.floor_number %></td>
         <td><%= room.name %></td>
-        <% if room.room_id == nil %>
-          <td>Available</td>
+        <% if @information[num] == nil %>
+          <td id="available">Available</td>
           <td>No schedule</td>
-        <% elsif room.end_date_time - room.start_date_time == 0 %>
-          <td>Available</td>
-          <td>No schedule</td>
+          <td>Nobody</td>
         <% else %>
-          <td>Booked</td>
-          <td><%= room.description %></td>
+          <td id="booked">Booked</td>
+          <td><%= @information[num].description %></td>
+          <td><%= @information[num].first_name + " " + @information[num].last_name %></td>
         <% end %>
-        <% if room.room_id == nil %>
-          <td><%= link_to "Details", room_path(room.id) %>
-          <% else %>
-            <td><%= link_to "Details", room_path(room.room_id) %></td>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+        <td><%= link_to "Details", room_path(room.id) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
