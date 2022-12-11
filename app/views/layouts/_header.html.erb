@@ -10,6 +10,7 @@
       <% if signed_in? %>
         <li><%= link_to 'My Bookings', bookings_path, class: "mx-2" %></li>
       <% end %>
+      <li><%= link_to "Current Time: #{Time.now.strftime("%k:%M:%S")}" %></li>
     </ul>
     <% if signed_in? %>
       <ul class="nav navbar-nav navbar-right">
