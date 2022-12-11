@@ -29,4 +29,27 @@
     </div>
   <% end %>
 </div>
-<%= link_to 'Go back', rooms_path %>
+<div>
+  <h2>Room Schedule:</h2>
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">S.N.</th>
+        <th scope="col">Meeting description</th>
+        <th scope="col">Meeting start</th>
+        <th scope="col">Meeting end</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bookings.each_with_index do |booking, num| %>
+        <tr>
+          <th scope="row"><%= num+1 %></th>
+          <td><%= booking.description %></td>
+          <td><%= booking.start_date_time %></td>
+          <td><%= booking.end_date_time %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <div>
+    <%= link_to 'Go back', rooms_path %>
