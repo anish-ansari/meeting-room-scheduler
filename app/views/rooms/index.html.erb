@@ -12,23 +12,45 @@
       <th scope="col">Status</th>
       <th scope="col">Current schedule</th>
       <th scope="col">Booked by</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
       <th scope="col">View details</th>
     </tr>
   </thead>
   <tbody>
-    <%= @rooms.each_with_index do |room, num| %>
+    <% @rooms.each_with_index do |room, num| %>
       <tr>
         <th scope="row"><%= num+1 %></th>
         <td><%= room.floor_number %></td>
         <td><%= room.name %></td>
-        <% if @information[num] == nil %>
+        <% flag = false
+           desp = ""
+           fname = ""
+           lname = ""
+           start = ""
+           close = "" %>
+        <% @information.each do |info| %>
+          <% if room.id == info[:room_id] %>
+            <% flag = true
+               desp = info[:description]
+               fname = info[:first_name]
+               lname = info[:last_name]
+               start = info[:start_date_time].in_time_zone.localtime
+               close = info[:end_date_time].in_time_zone.localtime %>
+          <% end %>
+        <% end %>
+        <% if flag == false %>
           <td id="available">Available</td>
           <td>No schedule</td>
           <td>Nobody</td>
+          <td>NA</td>
+          <td>NA</td>
         <% else %>
           <td id="booked">Booked</td>
-          <td><%= @information[num].description %></td>
-          <td><%= @information[num].first_name + " " + @information[num].last_name %></td>
+          <td><%= desp %></td>
+          <td><%= fname + " " + lname %></td>
+          <td><%= start %></td>
+          <td><%= close %></td>
         <% end %>
         <td><%= link_to "Details", room_path(room.id) %></td>
       </tr>
