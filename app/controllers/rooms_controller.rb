@@ -6,7 +6,9 @@ class RoomsController < ApplicationController
     @information = Room.joins(:bookings, :users).select('*')
   end
 
-  def show; end
+  def show
+    @bookings = @room.bookings.select('description, start_date_time, end_date_time')
+  end
 
   def new
     @room = Room.new
