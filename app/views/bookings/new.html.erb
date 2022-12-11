@@ -1,3 +1,6 @@
+<% if @flag == false %>
+  <%= flash.alert = "The time you selected isn't available to be booked" %>
+<% end %>
 <h2>Enter the following information to start your booking:</h2>
 <%= form_with model: @booking, url: room_bookings_path(@room), local: true, data: { turbo: false } do |form| %>
   <p>Room id: <%= @room.id %></p>
